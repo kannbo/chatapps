@@ -1,0 +1,39 @@
+<title>名前</title>
+<meta charset="UTF-8" />
+<h1>名前(7秒に1度更新)</h1>
+<input id="text"><a href="javascript:upload()"><button>投稿</button></a>
+<ul id=list>
+</ul>
+<script>
+function update(){
+  document.getElementById('list').innerHTML=""
+  var req = new XMLHttpRequest();
+  req.onreadystatechange = function() {
+    if(req.readyState == 4 && req.status == 200){
+      res=JSON.parse(req.responseText)
+    }
+  };
+  req.open("GET", "コピーしたもの?text=get",false);
+  req.send(null);
+  for (i=0;i<res.length;i++){
+    var li = document.createElement('li');
+    li.innerHTML =String(res[i][0]).replace("<", "＜").replace(">", "＞");
+    document.getElementById('list').appendChild(li);
+  }
+}
+function upload(){
+    var req2 = new XMLHttpRequest();
+  req2.onreadystatechange = function() {
+    if(req2.readyState == 4 && req2.status == 200){
+      console.log()
+    }
+  };
+  text=document.getElementById("text").value
+  document.getElementById("text").value=""
+  req2.open("GET", "コピーしたもの?text=add&data="+String(text).replace("&", ""),false);
+  req2.send(null);
+  update()
+}
+update()
+setInterval("update()", 7000);
+</script>
